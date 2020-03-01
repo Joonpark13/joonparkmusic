@@ -1,3 +1,4 @@
+const path = require('path');
 const { webpackConfig, webpackMerge, htmlOverlay } = require('just-scripts');
 
 module.exports = webpackMerge(
@@ -7,5 +8,9 @@ module.exports = webpackMerge(
   }),
   {
     // Here you can custom webpack configurations
+    devServer: {
+      contentBase: path.join(__dirname, 'public'),
+      historyApiFallback: true
+    }
   }
 );
