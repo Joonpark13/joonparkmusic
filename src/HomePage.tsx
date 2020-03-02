@@ -57,7 +57,8 @@ export default function HomePage(): ReactElement {
       backgroundSize: '360%',
       backgroundPosition: 'bottom right',
     } : {
-      backgroundSize: 'calc(100% - 200px)',
+      backgroundSize: 'cover',
+      backgroundPosition: 'bottom right 186px',
     }),
   });
 

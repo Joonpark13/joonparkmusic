@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.9.3",
+    "@uifabric/react-cards": "^0.109.30",
     "office-ui-fabric-react": "^7.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

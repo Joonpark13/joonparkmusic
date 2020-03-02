@@ -1,5 +1,6 @@
 import React, { ReactElement, ReactNode } from 'react';
-import { Separator, Text, mergeStyles } from 'office-ui-fabric-react';
+import { Text, mergeStyles } from 'office-ui-fabric-react';
+import ThemedSeparator from './ThemedSeparator';
 import { THEME_PRIMARY } from './constants';
 import { useIsMobile } from './helpers';
 
@@ -11,16 +12,6 @@ interface PageTemplateProps {
 const header = mergeStyles({
   textAlign: 'right',
 });
-
-const separatorStyles = {
-  root: {
-    selectors: {
-      '::before': {
-        backgroundColor: THEME_PRIMARY,
-      },
-    },
-  },
-};
 
 export default function PageTemplate(props : PageTemplateProps): ReactElement {
   const isMobile = useIsMobile();
@@ -35,7 +26,7 @@ export default function PageTemplate(props : PageTemplateProps): ReactElement {
     <div className={pageBackground}>
       <div className={isMobile ? header : undefined}>
         <Text variant="xxLarge" style={{ color: THEME_PRIMARY }}>{props.title}</Text>
-        <Separator styles={separatorStyles} />
+        <ThemedSeparator />
       </div>
       {props.children}
     </div>

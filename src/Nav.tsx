@@ -48,7 +48,7 @@ export default function Nav(): ReactElement {
   const isHome = location.pathname === '/';
 
   const navClassName = mergeStyles({
-    width: '200px',
+    minWidth: 200,
     ...(!isMobile && !isHome && { borderRight: '1px #D8D6D6 solid' }),
   });
 

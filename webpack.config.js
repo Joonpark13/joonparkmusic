@@ -11,6 +11,9 @@ module.exports = webpackMerge(
     devServer: {
       contentBase: path.join(__dirname, 'public'),
       historyApiFallback: true
+    },
+    output: {
+      publicPath: '/'
     }
   }
 );
