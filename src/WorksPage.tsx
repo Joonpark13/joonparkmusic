@@ -6,20 +6,25 @@ import PageTemplate from './PageTemplate';
 import { useIsMobile } from './helpers';
 import ThemedSeparator from './ThemedSeparator';
 import JourneyToEaglePeak from './content/JourneyToEaglePeak';
-import { THEME_PRIMARY } from './constants';
+import { THEME_PRIMARY, WORKS_CATEGORIES, WORKS_PATHS } from './constants';
 
 const dropdownOptions: IDropdownOption[] = [
-  { key: 'large-ensemble', text: 'Large Ensemble' },
-  { key: 'chamber-solo', text: 'Chamber and Solo' },
-  { key: 'film-video', text: 'Film and Video' },
+  { key: WORKS_CATEGORIES.largeEnsemble, text: 'Large Ensemble' },
+  { key: WORKS_CATEGORIES.chamberSolo, text: 'Chamber and Solo' },
+  { key: WORKS_CATEGORIES.filmVideo, text: 'Film and Video' },
 ];
 
 const WORKS = {
-  'large-ensemble': [
+  [WORKS_CATEGORIES.largeEnsemble]: [
     {
       title: 'Wind Ensemble',
       works: [
-        { title: 'Journey to Eagle Peak', year: 2020, premieredBy: 'Windy City Winds', content: JourneyToEaglePeak },
+        {
+          title: 'Journey to Eagle Peak',
+          year: 2020,
+          premieredBy: 'Windy City Winds',
+          content: JourneyToEaglePeak,
+        },
         { title: 'Canta Che Ti Passa', year: 2017 },
       ]
     },
@@ -30,8 +35,20 @@ const WORKS = {
       ]
     }
   ],
-  'chamber-solo': [],
-  'film-video': [],
+  [WORKS_CATEGORIES.chamberSolo]: [],
+  [WORKS_CATEGORIES.filmVideo]: [],
+};
+
+const pathToCategoryMap = {
+  [WORKS_PATHS.largeEnsemble]: WORKS_CATEGORIES.largeEnsemble,
+  [WORKS_PATHS.chamberSolo]: WORKS_CATEGORIES.chamberSolo,
+  [WORKS_PATHS.filmVideo]: WORKS_CATEGORIES.filmVideo,
+};
+
+const categoryToPathMap = {
+  [WORKS_CATEGORIES.largeEnsemble]: WORKS_PATHS.largeEnsemble,
+  [WORKS_CATEGORIES.chamberSolo]: WORKS_PATHS.chamberSolo,
+  [WORKS_CATEGORIES.filmVideo]: WORKS_PATHS.filmVideo,
 };
 
 const cardsList = mergeStyles({
@@ -58,7 +75,8 @@ const detailsClassName = mergeStyles({
 export default function WorksPage(): ReactElement {
   const isMobile = useIsMobile();
 
-  const { category: selectedTabKey } = useParams();
+  const { category: path } = useParams();
+  const selectedTabKey = pathToCategoryMap[path];
   const history = useHistory();
 
   const [selectedWork, setSelectedWork] = useState(null);
@@ -70,20 +88,18 @@ export default function WorksPage(): ReactElement {
       {isMobile ? (
         <Dropdown
           selectedKey={selectedTabKey}
-          onChange={(event, item) => item && history.replace(item.key)}
+          onChange={(event, item) => item && history.replace(categoryToPathMap[item.key])}
           options={dropdownOptions}
         />
       ) : (
         <Pivot
-          selectedKey={selectedTabKey as string}
+          selectedKey={selectedTabKey}
           onLinkClick={
-            item => item && history.replace(
-              dropdownOptions.find(option => option.text === item.props.headerText).key
-            )
+            item => item && history.replace(categoryToPathMap[item.props.itemKey])
           }
         >
           {dropdownOptions.map(option => (
-            <PivotItem key={option.key} headerText={option.text} />
+            <PivotItem key={option.key} itemKey={option.key} headerText={option.text} />
           ))}
         </Pivot>
       )}
@@ -91,7 +107,7 @@ export default function WorksPage(): ReactElement {
       <div className={cardsList}>
         <Switch>
           {dropdownOptions.map(option => (
-            <Route exact path={`/works/${option.key}`}>
+            <Route exact path={`/works/${categoryToPathMap[option.key]}`}>
               {WORKS[option.key].map(subCategory => (
                 <div className={subCategoryGroup}>
                   <Text block variant="xLarge" className={subCategoryTitle}>{subCategory.title}</Text>

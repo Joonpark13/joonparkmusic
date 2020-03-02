@@ -2,17 +2,18 @@ import React, { ReactElement, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Nav as FabricNav, Layer, mergeStyles, IconButton, classNamesFunction } from 'office-ui-fabric-react';
 import { useIsMobile } from './helpers';
+import { WORKS_PATHS } from './constants';
 
 const links = [
   { name: 'Home', url: '/' },
   { name: 'About', url: '/about' },
   {
     name: 'Works',
-    url: '',
+    url: '/works',
     links: [
-      { name: 'Large Ensemble', url: 'works/large-ensemble' },
-      { name: 'Chamber and Solo', url: 'works/chamber-and-solo' },
-      { name: 'Film and Video', url: 'works/film-and-video' },
+      { name: 'Large Ensemble', url: `/works/${WORKS_PATHS.largeEnsemble}` },
+      { name: 'Chamber and Solo', url: `/works/${WORKS_PATHS.chamberSolo}` },
+      { name: 'Film and Video', url: `/works/${WORKS_PATHS.filmVideo}` },
     ],
     isExpanded: true,
   },
