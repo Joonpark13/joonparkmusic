@@ -10,7 +10,8 @@
     "start": "webpack-dev-server",
     "test": "just-scripts test",
     "change": "npx beachball change",
-    "gen": "npx plop"
+    "gen": "npx plop",
+    "generator": "node ./generator/generator.js"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.3",
@@ -18,11 +19,13 @@
     "office-ui-fabric-react": "^7.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-markdown": "^4.3.1",
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "just-scripts": "^0.27.0",
     "just-stack-react": "^1.0.0",
+    "raw-loader": "^4.0.0",
     "webpack-dev-server": "^3.10.3"
   }
 }

@@ -1,55 +1,19 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import { useParams, useHistory, Switch, Route } from 'react-router-dom';
 import { mergeStyles, Dropdown, Pivot, PivotItem, IDropdownOption, Text, Panel, PanelType, FontWeights } from 'office-ui-fabric-react';
 import { Card } from '@uifabric/react-cards';
+import ReactMarkdown from 'react-markdown';
 import PageTemplate from './PageTemplate';
 import { useIsMobile } from './helpers';
 import ThemedSeparator from './ThemedSeparator';
-import JourneyToEaglePeak from './content/JourneyToEaglePeak';
-import { THEME_PRIMARY, WORKS_CATEGORIES, WORKS_PATHS } from './constants';
+import { THEME_PRIMARY, WORKS_CATEGORIES, WORKS, Work } from './constants';
 
 const dropdownOptions: IDropdownOption[] = [
   { key: WORKS_CATEGORIES.largeEnsemble, text: 'Large Ensemble' },
   { key: WORKS_CATEGORIES.chamberSolo, text: 'Chamber and Solo' },
   { key: WORKS_CATEGORIES.filmVideo, text: 'Film and Video' },
+  { key: WORKS_CATEGORIES.electronic, text: 'Electronic' },
 ];
-
-const WORKS = {
-  [WORKS_CATEGORIES.largeEnsemble]: [
-    {
-      title: 'Wind Ensemble',
-      works: [
-        {
-          title: 'Journey to Eagle Peak',
-          year: 2020,
-          premieredBy: 'Windy City Winds',
-          content: JourneyToEaglePeak,
-        },
-        { title: 'Canta Che Ti Passa', year: 2017 },
-      ]
-    },
-    {
-      title: 'SATB Choir',
-      works: [
-        { title: 'High Flight', year: 2017 },
-      ]
-    }
-  ],
-  [WORKS_CATEGORIES.chamberSolo]: [],
-  [WORKS_CATEGORIES.filmVideo]: [],
-};
-
-const pathToCategoryMap = {
-  [WORKS_PATHS.largeEnsemble]: WORKS_CATEGORIES.largeEnsemble,
-  [WORKS_PATHS.chamberSolo]: WORKS_CATEGORIES.chamberSolo,
-  [WORKS_PATHS.filmVideo]: WORKS_CATEGORIES.filmVideo,
-};
-
-const categoryToPathMap = {
-  [WORKS_CATEGORIES.largeEnsemble]: WORKS_PATHS.largeEnsemble,
-  [WORKS_CATEGORIES.chamberSolo]: WORKS_PATHS.chamberSolo,
-  [WORKS_CATEGORIES.filmVideo]: WORKS_PATHS.filmVideo,
-};
 
 const cardsList = mergeStyles({
   marginTop: 32,
@@ -75,27 +39,44 @@ const detailsClassName = mergeStyles({
 export default function WorksPage(): ReactElement {
   const isMobile = useIsMobile();
 
-  const { category: path } = useParams();
-  const selectedTabKey = pathToCategoryMap[path];
+  const { category: selectedTabKey } = useParams();
   const history = useHistory();
 
-  const [selectedWork, setSelectedWork] = useState(null);
+  const [selectedWork, setSelectedWork]: [Work | null, Function] = useState(null);
 
-  const Content = selectedWork ? selectedWork.content : null;
+  const [content, setContent] = useState(null);
+  useEffect(() => {
+    (async () => {
+      if (selectedWork) {
+        let contentBody;
+        try {
+          contentBody = await import(`./content/${selectedWork.id}.md`);
+          setContent(contentBody.default);
+        } catch {
+          setContent(null);
+        }
+      }
+    })();
+  }, [selectedWork, setContent]);
+
+  function openPanel(work) {
+    setSelectedWork(work);
+    setContent(null);
+  }
 
   return (
     <PageTemplate title="Works">
       {isMobile ? (
         <Dropdown
           selectedKey={selectedTabKey}
-          onChange={(event, item) => item && history.replace(categoryToPathMap[item.key])}
+          onChange={(event, item) => item && history.replace(item.key)}
           options={dropdownOptions}
         />
       ) : (
         <Pivot
           selectedKey={selectedTabKey}
           onLinkClick={
-            item => item && history.replace(categoryToPathMap[item.props.itemKey])
+            item => item && history.replace(item.props.itemKey)
           }
         >
           {dropdownOptions.map(option => (
@@ -107,13 +88,13 @@ export default function WorksPage(): ReactElement {
       <div className={cardsList}>
         <Switch>
           {dropdownOptions.map(option => (
-            <Route exact path={`/works/${categoryToPathMap[option.key]}`}>
+            <Route exact path={`/works/${option.key}`}>
               {WORKS[option.key].map(subCategory => (
                 <div className={subCategoryGroup}>
                   <Text block variant="xLarge" className={subCategoryTitle}>{subCategory.title}</Text>
 
                   {subCategory.works.map(work => (
-                    <Card horizontal className={cardClassName} onClick={() => setSelectedWork(work)}>
+                    <Card horizontal className={cardClassName} onClick={() => openPanel(work)}>
                       <Card.Item>
                         <Text block variant="large">{work.title}</Text>
                         <Text block variant="medium" style={{ fontStyle: 'italic' }}>{work.year}</Text>
@@ -153,7 +134,7 @@ export default function WorksPage(): ReactElement {
                 </div>
               )}
             </div>
-            {selectedWork.content && <Content />}
+            {content && <ReactMarkdown source={content} />}
           </>
         )}
       </Panel>

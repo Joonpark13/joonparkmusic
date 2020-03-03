@@ -14,6 +14,14 @@ module.exports = webpackMerge(
     },
     output: {
       publicPath: '/'
-    }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.md$/i,
+          use: 'raw-loader',
+        },
+      ],
+    },
   }
 );

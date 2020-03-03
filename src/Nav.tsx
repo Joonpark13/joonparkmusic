@@ -2,7 +2,7 @@ import React, { ReactElement, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Nav as FabricNav, Layer, mergeStyles, IconButton, classNamesFunction } from 'office-ui-fabric-react';
 import { useIsMobile } from './helpers';
-import { WORKS_PATHS } from './constants';
+import { WORKS_CATEGORIES } from './constants';
 
 const links = [
   { name: 'Home', url: '/' },
@@ -11,9 +11,10 @@ const links = [
     name: 'Works',
     url: '/works',
     links: [
-      { name: 'Large Ensemble', url: `/works/${WORKS_PATHS.largeEnsemble}` },
-      { name: 'Chamber and Solo', url: `/works/${WORKS_PATHS.chamberSolo}` },
-      { name: 'Film and Video', url: `/works/${WORKS_PATHS.filmVideo}` },
+      { name: 'Large Ensemble', url: `/works/${WORKS_CATEGORIES.largeEnsemble}` },
+      { name: 'Chamber and Solo', url: `/works/${WORKS_CATEGORIES.chamberSolo}` },
+      { name: 'Film and Video', url: `/works/${WORKS_CATEGORIES.filmVideo}` },
+      { name: 'Electronic', url: `/works/${WORKS_CATEGORIES.electronic}` },
     ],
     isExpanded: true,
   },
