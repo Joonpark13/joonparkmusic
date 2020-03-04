@@ -5,6 +5,7 @@ import Nav from './Nav';
 import HomePage from './HomePage';
 import AboutPage from './AboutPage';
 import WorksPage from './WorksPage';
+import ContactPage from './ContactPage';
 
 const mainClassName = mergeStyles({
   display: 'flex',
@@ -31,7 +32,7 @@ export default function App(): ReactElement {
             <WorksPage />
           </Route>
           <Route exact path="/contact">
-            Contact
+            <ContactPage />
           </Route>
         </Switch>
       </main>
