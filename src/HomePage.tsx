@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { useHistory } from 'react-router';
 import { mergeStyles, DefaultButton, PrimaryButton, Text } from 'office-ui-fabric-react';
 import { useIsMobile } from './helpers';
 import hero from './hero.jpg';
@@ -78,6 +79,8 @@ export default function HomePage(): ReactElement {
     ...(isMobile ? { fontSize: '48px' } : {}),
   };
 
+  const history = useHistory();
+
   return (
     <div className={backgroundClassName}>
       <div className={heroClassName} />
@@ -92,9 +95,17 @@ export default function HomePage(): ReactElement {
 
         <div>
           <div className={actionButtonsContainerClassName}>
-            <DefaultButton text="About" style={isMobile ? undefined : desktopButtonStyles } />
+            <DefaultButton
+              text="About"
+              style={isMobile ? undefined : desktopButtonStyles }
+              onClick={() => history.push('/about')}
+            />
             <div className={horizontalSeparatorClassName} />
-            <PrimaryButton text="Works" style={isMobile ? undefined : desktopButtonStyles } />
+            <PrimaryButton
+              text="Works"
+              style={isMobile ? undefined : desktopButtonStyles }
+              onClick={() => history.push('/works/large-ensemble')}
+            />
           </div>
           <div className={spacer2} />
         </div>

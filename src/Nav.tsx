@@ -9,7 +9,7 @@ const links = [
   { name: 'About', url: '/about' },
   {
     name: 'Works',
-    url: '/works',
+    url: '',
     links: [
       { name: 'Large Ensemble', url: `/works/${WORKS_CATEGORIES.largeEnsemble}` },
       { name: 'Chamber and Solo', url: `/works/${WORKS_CATEGORIES.chamberSolo}` },

@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown/with-html';
 import PageTemplate from './PageTemplate';
 import { useIsMobile } from './helpers';
 import ThemedSeparator from './ThemedSeparator';
-import { THEME_PRIMARY, WORKS_CATEGORIES, WORKS, Work, Subcategory } from './constants';
+import { THEME_PRIMARY, WORKS_CATEGORIES, WORKS, Work } from './constants';
 
 const dropdownOptions: IDropdownOption[] = [
   { key: WORKS_CATEGORIES.largeEnsemble, text: 'Large Ensemble' },
@@ -44,7 +44,7 @@ export default function WorksPage(): ReactElement {
 
   const [selectedWork, setSelectedWork] = useState<null | Work>(null);
 
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState<null | string>(null);
   useEffect(() => {
     (async () => {
       if (selectedWork) {
@@ -69,14 +69,14 @@ export default function WorksPage(): ReactElement {
       {isMobile ? (
         <Dropdown
           selectedKey={selectedTabKey}
-          onChange={(event, item) => item && history.replace(item.key)}
+          onChange={(event, item) => item && history.replace(item.key as string)}
           options={dropdownOptions}
         />
       ) : (
         <Pivot
           selectedKey={selectedTabKey}
           onLinkClick={
-            item => item && history.replace(item.props.itemKey)
+            item => item && history.replace(item.props.itemKey as string)
           }
         >
           {dropdownOptions.map(option => (

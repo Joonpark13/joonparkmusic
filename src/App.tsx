@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { mergeStyles, Fabric } from 'office-ui-fabric-react';
+import { mergeStyles } from 'office-ui-fabric-react';
 import Nav from './Nav';
 import HomePage from './HomePage';
 import AboutPage from './AboutPage';
