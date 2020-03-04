@@ -19,7 +19,6 @@ export default function PageTemplate(props : PageTemplateProps): ReactElement {
   const pageBackground = mergeStyles({
     padding: isMobile ? 24 : '24px 36px',
     width: '100%',
-    height: '100%',
   });
 
   return (

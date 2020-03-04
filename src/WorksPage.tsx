@@ -2,11 +2,11 @@ import React, { ReactElement, useState, useEffect } from 'react';
 import { useParams, useHistory, Switch, Route } from 'react-router-dom';
 import { mergeStyles, Dropdown, Pivot, PivotItem, IDropdownOption, Text, Panel, PanelType, FontWeights } from 'office-ui-fabric-react';
 import { Card } from '@uifabric/react-cards';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from 'react-markdown/with-html';
 import PageTemplate from './PageTemplate';
 import { useIsMobile } from './helpers';
 import ThemedSeparator from './ThemedSeparator';
-import { THEME_PRIMARY, WORKS_CATEGORIES, WORKS, Work } from './constants';
+import { THEME_PRIMARY, WORKS_CATEGORIES, WORKS, Work, Subcategory } from './constants';
 
 const dropdownOptions: IDropdownOption[] = [
   { key: WORKS_CATEGORIES.largeEnsemble, text: 'Large Ensemble' },
@@ -42,7 +42,7 @@ export default function WorksPage(): ReactElement {
   const { category: selectedTabKey } = useParams();
   const history = useHistory();
 
-  const [selectedWork, setSelectedWork]: [Work | null, Function] = useState(null);
+  const [selectedWork, setSelectedWork] = useState<null | Work>(null);
 
   const [content, setContent] = useState(null);
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function WorksPage(): ReactElement {
     })();
   }, [selectedWork, setContent]);
 
-  function openPanel(work) {
+  function openPanel(work: Work): void {
     setSelectedWork(work);
     setContent(null);
   }
@@ -80,7 +80,7 @@ export default function WorksPage(): ReactElement {
           }
         >
           {dropdownOptions.map(option => (
-            <PivotItem key={option.key} itemKey={option.key} headerText={option.text} />
+            <PivotItem key={option.key} itemKey={option.key as string} headerText={option.text} />
           ))}
         </Pivot>
       )}
@@ -91,11 +91,15 @@ export default function WorksPage(): ReactElement {
             <Route exact path={`/works/${option.key}`}>
               {WORKS[option.key].map(subCategory => (
                 <div className={subCategoryGroup}>
-                  <Text block variant="xLarge" className={subCategoryTitle}>{subCategory.title}</Text>
+                  {subCategory.title && (
+                    <Text block variant="xLarge" className={subCategoryTitle}>
+                      {subCategory.title}
+                    </Text>
+                  )}
 
                   {subCategory.works.map(work => (
                     <Card horizontal className={cardClassName} onClick={() => openPanel(work)}>
-                      <Card.Item>
+                      <Card.Item styles={{ root: { width: '100%' } }}>
                         <Text block variant="large">{work.title}</Text>
                         <Text block variant="medium" style={{ fontStyle: 'italic' }}>{work.year}</Text>
                       </Card.Item>
@@ -118,23 +122,34 @@ export default function WorksPage(): ReactElement {
             <Text variant="xLarge" style={{ color: THEME_PRIMARY }} block>
               {selectedWork.title}
             </Text>
+            {selectedWork.subtitle && (
+              <Text variant="medium" style={{ color: THEME_PRIMARY }} block>
+                {selectedWork.subtitle}
+              </Text>
+            )}
             <ThemedSeparator />
             <div className={detailsClassName}>
+              {selectedWork.instrumentation && (
+                <div>
+                  <Text>For {selectedWork.instrumentation}</Text>
+                </div>
+              )}
+
               <div>
                 <Text styles={{ root: { fontWeight: FontWeights.bold } }}>Composed:</Text>
                 {' '}
                 <Text>{selectedWork.year}</Text>
               </div>
 
-              {selectedWork.premieredBy && (
+              {selectedWork.commissionedBy && (
                 <div>
-                  <Text styles={{ root: { fontWeight: FontWeights.bold } }}>Premiered by:</Text>
+                  <Text styles={{ root: { fontWeight: FontWeights.bold } }}>Commissioned by:</Text>
                   {' '}
-                  <Text>{selectedWork.premieredBy}</Text>
+                  <Text>{selectedWork.commissionedBy}</Text>
                 </div>
               )}
             </div>
-            {content && <ReactMarkdown source={content} />}
+            {content && <ReactMarkdown source={content} escapeHtml={false} />}
           </>
         )}
       </Panel>
