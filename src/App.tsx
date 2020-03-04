@@ -9,7 +9,7 @@ import ContactPage from './ContactPage';
 
 const mainClassName = mergeStyles({
   display: 'flex',
-  height: '100%',
+  minHeight: '100vh',
 });
 
 export default function App(): ReactElement {
