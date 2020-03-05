@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { useHistory } from 'react-router';
 import { mergeStyles, DefaultButton, PrimaryButton, Text } from 'office-ui-fabric-react';
 import { useIsMobile } from './helpers';
-import hero from './hero.jpg';
+import hero from './images/hero.jpg';
 
 const backgroundClassName = mergeStyles({
   width: '100%',
@@ -54,13 +54,15 @@ export default function HomePage(): ReactElement {
     backgroundRepeat: 'no-repeat',
     backgroundColor: 'black',
     zIndex: -1,
-    ...(isMobile ? {
-      backgroundSize: '360%',
-      backgroundPosition: 'bottom right',
-    } : {
-      backgroundSize: 'cover',
-      backgroundPosition: 'bottom right 186px',
-    }),
+    ...(isMobile
+      ? {
+          backgroundSize: '360%',
+          backgroundPosition: 'bottom right',
+        }
+      : {
+          backgroundSize: 'cover',
+          backgroundPosition: 'bottom right 186px',
+        }),
   });
 
   const horizontalSeparatorClassName = mergeStyles({
@@ -88,8 +90,12 @@ export default function HomePage(): ReactElement {
         <div>
           <div className={spacer1} />
           <div className={mainTextClassName}>
-            <Text variant={isMobile ? 'xxLarge' : 'mega'} style={titleStyleOverride}>Joon Park</Text>
-            <Text variant={isMobile ? 'xLarge' : 'xxLarge'} style={subtitleStyleOverride}>Composer</Text>
+            <Text variant={isMobile ? 'xxLarge' : 'mega'} style={titleStyleOverride}>
+              Joon Park
+            </Text>
+            <Text variant={isMobile ? 'xLarge' : 'xxLarge'} style={subtitleStyleOverride}>
+              Composer
+            </Text>
           </div>
         </div>
 
@@ -97,13 +103,13 @@ export default function HomePage(): ReactElement {
           <div className={actionButtonsContainerClassName}>
             <DefaultButton
               text="About"
-              style={isMobile ? undefined : desktopButtonStyles }
+              style={isMobile ? undefined : desktopButtonStyles}
               onClick={() => history.push('/about')}
             />
             <div className={horizontalSeparatorClassName} />
             <PrimaryButton
               text="Works"
-              style={isMobile ? undefined : desktopButtonStyles }
+              style={isMobile ? undefined : desktopButtonStyles}
               onClick={() => history.push('/works/large-ensemble')}
             />
           </div>

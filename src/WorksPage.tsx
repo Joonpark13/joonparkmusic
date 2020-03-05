@@ -1,13 +1,24 @@
 import React, { ReactElement, useState, useEffect } from 'react';
 import { useParams, useHistory, Switch, Route, useLocation } from 'react-router-dom';
-import { mergeStyles, Dropdown, Pivot, PivotItem, IDropdownOption, Text, Panel, PanelType, FontWeights } from 'office-ui-fabric-react';
+import {
+  mergeStyles,
+  Dropdown,
+  Pivot,
+  PivotItem,
+  IDropdownOption,
+  Text,
+  Panel,
+  PanelType,
+  FontWeights,
+} from 'office-ui-fabric-react';
 import { parse } from 'query-string';
 import { Card } from '@uifabric/react-cards';
 import ReactMarkdown from 'react-markdown/with-html';
 import PageTemplate from './PageTemplate';
 import { useIsMobile } from './helpers';
 import ThemedSeparator from './ThemedSeparator';
-import { THEME_PRIMARY, WorkCategory, WORKS, Work, WORK_CATEGORIES, WORK_SUBCATEGORIES } from './constants';
+import { THEME_PRIMARY, WorkCategory, Work } from './constants';
+import { WORK_CATEGORIES, WORK_SUBCATEGORIES, WORKS } from './data';
 
 const dropdownOptions: IDropdownOption[] = [
   { key: WorkCategory.largeEnsemble, text: 'Large Ensemble' },
@@ -84,9 +95,7 @@ export default function WorksPage(): ReactElement {
       ) : (
         <Pivot
           selectedKey={selectedTabKey}
-          onLinkClick={
-            item => item && history.replace(`/works/${item.props.itemKey}`)
-          }
+          onLinkClick={item => item && history.replace(`/works/${item.props.itemKey}`)}
         >
           {dropdownOptions.map(option => (
             <PivotItem key={option.key} itemKey={option.key as string} headerText={option.text} />
@@ -97,11 +106,11 @@ export default function WorksPage(): ReactElement {
       <div className={cardsList}>
         <Switch>
           {dropdownOptions.map(option => (
-            <Route path={`/works/${option.key}`}>
+            <Route path={`/works/${option.key}`} key={option.key}>
               {WORK_CATEGORIES[option.key].map(subCategoryId => {
                 const subCategory = WORK_SUBCATEGORIES[subCategoryId];
                 return (
-                  <div className={subCategoryGroup}>
+                  <div className={subCategoryGroup} key={subCategoryId}>
                     {subCategory.title && (
                       <Text block variant="xLarge" className={subCategoryTitle}>
                         {subCategory.title}
@@ -111,10 +120,19 @@ export default function WorksPage(): ReactElement {
                     {subCategory.works.map(workId => {
                       const work = WORKS[workId];
                       return (
-                        <Card horizontal className={cardClassName} onClick={() => openPanel(workId)}>
+                        <Card
+                          horizontal
+                          className={cardClassName}
+                          onClick={() => openPanel(workId)}
+                          key={workId}
+                        >
                           <Card.Item styles={{ root: { width: '100%' } }}>
-                            <Text block variant="large">{work.title}</Text>
-                            <Text block variant="medium" style={{ fontStyle: 'italic' }}>{work.year}</Text>
+                            <Text block variant="large">
+                              {work.title}
+                            </Text>
+                            <Text block variant="medium" style={{ fontStyle: 'italic' }}>
+                              {work.year}
+                            </Text>
                           </Card.Item>
                         </Card>
                       );
@@ -153,15 +171,13 @@ export default function WorksPage(): ReactElement {
               )}
 
               <div>
-                <Text styles={{ root: { fontWeight: FontWeights.bold } }}>Composed:</Text>
-                {' '}
+                <Text styles={{ root: { fontWeight: FontWeights.bold } }}>Composed:</Text>{' '}
                 <Text>{selectedWork.year}</Text>
               </div>
 
               {selectedWork.commissionedBy && (
                 <div>
-                  <Text styles={{ root: { fontWeight: FontWeights.bold } }}>Commissioned by:</Text>
-                  {' '}
+                  <Text styles={{ root: { fontWeight: FontWeights.bold } }}>Commissioned by:</Text>{' '}
                   <Text>{selectedWork.commissionedBy}</Text>
                 </div>
               )}
@@ -173,4 +189,3 @@ export default function WorksPage(): ReactElement {
     </PageTemplate>
   );
 }
-

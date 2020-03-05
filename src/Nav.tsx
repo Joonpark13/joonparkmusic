@@ -1,6 +1,12 @@
 import React, { ReactElement, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Nav as FabricNav, Layer, mergeStyles, IconButton, classNamesFunction } from 'office-ui-fabric-react';
+import {
+  Nav as FabricNav,
+  Layer,
+  mergeStyles,
+  IconButton,
+  classNamesFunction,
+} from 'office-ui-fabric-react';
 import { useIsMobile } from './helpers';
 import { WorkCategory } from './constants';
 
@@ -28,7 +34,7 @@ const buttonClassName = mergeStyles({
   selectors: {
     ':hover': {
       backgroundColor: 'none',
-    }
+    },
   },
 });
 
@@ -62,24 +68,20 @@ export default function Nav(): ReactElement {
   if (isMobile) {
     return (
       <Layer styles={open ? layerStyles : undefined}>
-        <div className={open ? layerContentBackground: undefined}>
+        <div className={open ? layerContentBackground : undefined}>
           <IconButton
             iconProps={{
               iconName: open ? 'Cancel' : 'GlobalNavButton',
               style: !open && isHome ? { color: 'white' } : undefined,
-              styles: { root: { fontSize: 20 } }
-            }} 
+              styles: { root: { fontSize: 20 } },
+            }}
             className={buttonClassName}
             onClick={() => setOpen(!open)}
           />
-          {open && (
-            <div>{nav}</div>
-          )}
+          {open && <div>{nav}</div>}
         </div>
       </Layer>
     );
   }
-  return (
-    <div className={navClassName}>{nav}</div>
-  );
+  return <div className={navClassName}>{nav}</div>;
 }

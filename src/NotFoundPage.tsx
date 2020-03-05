@@ -11,7 +11,7 @@ const container = mergeStyles({
 export default function NotFoundPage(): ReactElement {
   return (
     <div className={container}>
-      <Text variant="large">Sorry, that page doesn't exist.</Text>
+      <Text variant="large">Sorry, that page doesn&apos;t exist.</Text>
     </div>
   );
 }

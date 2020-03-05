@@ -20,7 +20,7 @@ export default function App(): ReactElement {
       <ScrollToTop />
       <main className={mainClassName}>
         <Nav />
-        
+
         <Switch>
           <Route exact path="/">
             <HomePage />
@@ -42,4 +42,4 @@ export default function App(): ReactElement {
       </main>
     </BrowserRouter>
   );
-};
+}

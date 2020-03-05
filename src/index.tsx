@@ -11,8 +11,8 @@ loadTheme({
   palette: {
     themePrimary: THEME_PRIMARY,
     themeDarkAlt: '#401F68',
-  }
-})
+  },
+});
 
 // Inject some global styles
 mergeStyles({
