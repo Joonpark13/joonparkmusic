@@ -21,9 +21,10 @@ const links = [
   { name: 'Contact', url: '/contact' },
 ];
 
+const buttonSize = 52;
 const buttonClassName = mergeStyles({
-  height: '40px',
-  width: '40px',
+  height: buttonSize,
+  width: buttonSize,
   selectors: {
     ':hover': {
       backgroundColor: 'none',
@@ -66,6 +67,7 @@ export default function Nav(): ReactElement {
             iconProps={{
               iconName: open ? 'Cancel' : 'GlobalNavButton',
               style: !open && isHome ? { color: 'white' } : undefined,
+              styles: { root: { fontSize: 20 } }
             }} 
             className={buttonClassName}
             onClick={() => setOpen(!open)}

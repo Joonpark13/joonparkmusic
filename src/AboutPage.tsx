@@ -47,10 +47,11 @@ export default function AboutPage(): ReactElement {
         </Text>
 
         <Text variant="mediumPlus" className={text}>
-          I work as a <a href="http://joonpark.me/">software engineer</a> by day, and I write{' '}
-          <a href="https://medium.com/@joon.park13">short fiction and nonfiction</a> if musical
-          inspiration doesn't strike. When I'm outside you'll usually find me playing ultimate
-          frisbee or skiing. Feel free to check out my works{' '}
+          I work as a <a href="http://joonpark.me/" target="_blank">software engineer</a> by day, and
+          I write{' '}
+          <a href="https://medium.com/@joon.park13" target="_blank">short fiction and nonfiction</a>
+          {' '}if musical inspiration doesn't strike. When I'm outside you'll usually find me
+          playing ultimate frisbee or skiing. Feel free to check out my works{' '}
           <Link to="/works/large-ensemble">here</Link> or reach out with any inquiries{' '}
           <Link to="/contact">here</Link>.
         </Text>

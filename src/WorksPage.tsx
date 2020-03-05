@@ -116,6 +116,8 @@ export default function WorksPage(): ReactElement {
         isOpen={Boolean(selectedWork)}
         onDismiss={() => setSelectedWork(null)}
         type={PanelType.medium}
+        isLightDismiss
+        overlayProps={{ isDarkThemed: true }}
       >
         {selectedWork && (
           <>
