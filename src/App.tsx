@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { mergeStyles } from 'office-ui-fabric-react';
+import ScrollToTop from './ScrollToTop';
 import Nav from './Nav';
 import HomePage from './HomePage';
 import AboutPage from './AboutPage';
@@ -15,6 +16,7 @@ const mainClassName = mergeStyles({
 export default function App(): ReactElement {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <main className={mainClassName}>
         <Nav />
         
