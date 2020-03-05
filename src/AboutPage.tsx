@@ -34,16 +34,17 @@ export default function AboutPage(): ReactElement {
         <img src={about} className={imgClassName} />
 
         <Text variant="large" className={text}>
-          Hi, thanks for visiting my website!
+          Hi!
         </Text>
 
         <Text variant="mediumPlus" className={text}>
-          I'm a composer based in Chicago, IL and I write a variety of music for ensembles, chamber
-          groups, and media. I graduated with a Bachelor of Music in Music Composition from the Bienen
-          School of Music at Northwestern University. I've been fortunate enough to have music
-          performed by incredible ensembles such as the Northwestern University Contemporary Music
-          Ensemble, the Windy City Winds, and the Ithaca High School Choir, among others. In addition
-          to composing, I conduct my own music and enjoy audio recording and production.
+          I'm Joon and I'm a composer based in Chicago, IL. I write a variety of music for
+          ensembles, chamber groups, and media. I graduated with a Bachelor of Music in Music
+          Composition from the Bienen School of Music at Northwestern University. I've been
+          fortunate enough to have music performed by incredible ensembles such as the Northwestern
+          University Contemporary Music Ensemble, the Windy City Winds, and the Ithaca High School
+          Choir, among others. In addition to composing, I conduct my own music and enjoy audio
+          recording and production.
         </Text>
 
         <Text variant="mediumPlus" className={text}>

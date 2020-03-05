@@ -1,18 +1,19 @@
 import React, { ReactElement, useState, useEffect } from 'react';
-import { useParams, useHistory, Switch, Route } from 'react-router-dom';
+import { useParams, useHistory, Switch, Route, useLocation } from 'react-router-dom';
 import { mergeStyles, Dropdown, Pivot, PivotItem, IDropdownOption, Text, Panel, PanelType, FontWeights } from 'office-ui-fabric-react';
+import { parse } from 'query-string';
 import { Card } from '@uifabric/react-cards';
 import ReactMarkdown from 'react-markdown/with-html';
 import PageTemplate from './PageTemplate';
 import { useIsMobile } from './helpers';
 import ThemedSeparator from './ThemedSeparator';
-import { THEME_PRIMARY, WORKS_CATEGORIES, WORKS, Work } from './constants';
+import { THEME_PRIMARY, WorkCategory, WORKS, Work, WORK_CATEGORIES, WORK_SUBCATEGORIES } from './constants';
 
 const dropdownOptions: IDropdownOption[] = [
-  { key: WORKS_CATEGORIES.largeEnsemble, text: 'Large Ensemble' },
-  { key: WORKS_CATEGORIES.chamberSolo, text: 'Chamber and Solo' },
-  { key: WORKS_CATEGORIES.filmVideo, text: 'Film and Video' },
-  { key: WORKS_CATEGORIES.electronic, text: 'Electronic' },
+  { key: WorkCategory.largeEnsemble, text: 'Large Ensemble' },
+  { key: WorkCategory.chamberSolo, text: 'Chamber and Solo' },
+  { key: WorkCategory.filmVideo, text: 'Film and Video' },
+  { key: WorkCategory.electronic, text: 'Electronic' },
 ];
 
 const cardsList = mergeStyles({
@@ -36,13 +37,21 @@ const detailsClassName = mergeStyles({
   marginBottom: 12,
 });
 
+function getWork(workId: null | string): null | Work {
+  if (!workId) return null;
+  return WORKS[workId];
+}
+
 export default function WorksPage(): ReactElement {
   const isMobile = useIsMobile();
 
   const { category: selectedTabKey } = useParams();
   const history = useHistory();
+  const location = useLocation();
+  const params = parse(location.search);
+  const selectedWorkId = params.work ? params.work : null;
 
-  const [selectedWork, setSelectedWork] = useState<null | Work>(null);
+  const selectedWork = getWork(selectedWorkId as string | null);
 
   const [content, setContent] = useState<null | string>(null);
   useEffect(() => {
@@ -50,7 +59,7 @@ export default function WorksPage(): ReactElement {
       if (selectedWork) {
         let contentBody;
         try {
-          contentBody = await import(`./content/${selectedWork.id}.md`);
+          contentBody = await import(`./content/${selectedWorkId}.md`);
           setContent(contentBody.default);
         } catch {
           setContent(null);
@@ -59,8 +68,8 @@ export default function WorksPage(): ReactElement {
     })();
   }, [selectedWork, setContent]);
 
-  function openPanel(work: Work): void {
-    setSelectedWork(work);
+  function openPanel(workId: string): void {
+    history.replace(`/works/${selectedTabKey}?work=${workId}`);
     setContent(null);
   }
 
@@ -69,14 +78,14 @@ export default function WorksPage(): ReactElement {
       {isMobile ? (
         <Dropdown
           selectedKey={selectedTabKey}
-          onChange={(event, item) => item && history.replace(item.key as string)}
+          onChange={(event, item) => item && history.replace(`/works/${item.key}`)}
           options={dropdownOptions}
         />
       ) : (
         <Pivot
           selectedKey={selectedTabKey}
           onLinkClick={
-            item => item && history.replace(item.props.itemKey as string)
+            item => item && history.replace(`/works/${item.props.itemKey}`)
           }
         >
           {dropdownOptions.map(option => (
@@ -88,25 +97,31 @@ export default function WorksPage(): ReactElement {
       <div className={cardsList}>
         <Switch>
           {dropdownOptions.map(option => (
-            <Route exact path={`/works/${option.key}`}>
-              {WORKS[option.key].map(subCategory => (
-                <div className={subCategoryGroup}>
-                  {subCategory.title && (
-                    <Text block variant="xLarge" className={subCategoryTitle}>
-                      {subCategory.title}
-                    </Text>
-                  )}
+            <Route path={`/works/${option.key}`}>
+              {WORK_CATEGORIES[option.key].map(subCategoryId => {
+                const subCategory = WORK_SUBCATEGORIES[subCategoryId];
+                return (
+                  <div className={subCategoryGroup}>
+                    {subCategory.title && (
+                      <Text block variant="xLarge" className={subCategoryTitle}>
+                        {subCategory.title}
+                      </Text>
+                    )}
 
-                  {subCategory.works.map(work => (
-                    <Card horizontal className={cardClassName} onClick={() => openPanel(work)}>
-                      <Card.Item styles={{ root: { width: '100%' } }}>
-                        <Text block variant="large">{work.title}</Text>
-                        <Text block variant="medium" style={{ fontStyle: 'italic' }}>{work.year}</Text>
-                      </Card.Item>
-                    </Card>
-                  ))}
-                </div>
-              ))}
+                    {subCategory.works.map(workId => {
+                      const work = WORKS[workId];
+                      return (
+                        <Card horizontal className={cardClassName} onClick={() => openPanel(workId)}>
+                          <Card.Item styles={{ root: { width: '100%' } }}>
+                            <Text block variant="large">{work.title}</Text>
+                            <Text block variant="medium" style={{ fontStyle: 'italic' }}>{work.year}</Text>
+                          </Card.Item>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                );
+              })}
             </Route>
           ))}
         </Switch>
@@ -114,7 +129,7 @@ export default function WorksPage(): ReactElement {
 
       <Panel
         isOpen={Boolean(selectedWork)}
-        onDismiss={() => setSelectedWork(null)}
+        onDismiss={() => history.replace(`/works/${selectedTabKey}`)}
         type={PanelType.medium}
         isLightDismiss
         overlayProps={{ isDarkThemed: true }}

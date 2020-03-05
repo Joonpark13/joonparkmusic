@@ -7,6 +7,7 @@ import HomePage from './HomePage';
 import AboutPage from './AboutPage';
 import WorksPage from './WorksPage';
 import ContactPage from './ContactPage';
+import NotFoundPage from './NotFoundPage';
 
 const mainClassName = mergeStyles({
   display: 'flex',
@@ -36,6 +37,7 @@ export default function App(): ReactElement {
           <Route exact path="/contact">
             <ContactPage />
           </Route>
+          <NotFoundPage />
         </Switch>
       </main>
     </BrowserRouter>
