@@ -35,6 +35,7 @@ export const WORK_SUBCATEGORIES: { [key: string]: Subcategory } = {
   '0af48a44-a5ef-4ae7-b39d-cdd181a6312a': {
     title: 'SATB Choir',
     works: [
+      '4f8bda74-0c32-4357-9139-3ae68fbab489',
       '45c1e22e-5093-4866-94ea-e77e35480c72',
       'd3119d5e-9fd0-4711-855f-dbf79c48a167',
       'e92d5d33-64a2-41a8-a0c7-40ee97f6f688',
@@ -244,4 +245,8 @@ export const WORKS: { [key: string]: Work } = {
     title: 'An Exploration of Music Technology',
     year: 2015,
   },
+  '4f8bda74-0c32-4357-9139-3ae68fbab489': {
+    title: 'The Telling',
+    year: 2020,
+  }
 };
